@@ -24,7 +24,7 @@ git clone <this repository>
 # building the docker image
 docker build . -t nodesql
 
-# run the front-end and API from your container
+# run the front-end and API from your container (mynet for docker networking)
 docker run --rm --name injection --net mynet -p 3000:3000 -it nodesql:latest
 ```
 
@@ -63,3 +63,4 @@ It is your responsibility to ensure you have consent for assessing websites usin
 - Refactor the injection models to use the sqlmapapi, rather than subprocesses
 - Use websockets to inform clients of updated SQLMap output 
 - Modify the front-end to use React
+- Eslint all the things

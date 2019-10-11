@@ -7,7 +7,7 @@ It also features:
 - an easy to use front-end for traversing a vulnerable database
 - full support for HTTP GET/POST with both form and cookie inputs
 
-NodeSQL was built with security awareness for non-technical people in mind. It comprises only a small subset of SQLMap's extensive feature set, so for meaningful security testing it's probably best to stick with the original SQLMap CLI. PR's are always welcome, and I've left a few notes in the bottom of this file of things to think about. 
+NodeSQL was built with security awareness in mind. It comprises only a small subset of SQLMap's extensive feature set, so for meaningful security engagements it's probably best to stick with the original SQLMap CLI. PR's are always welcome, and I've left a few notes in the bottom of this file of things to think about. 
 
 ## Demo
 ![gif image](./images/dvwa_gif.gif)
@@ -56,7 +56,7 @@ Or if you've ever gone through Troy Hunt's [hack-yourself-first website](http://
 ![hyf-demo](./images/hyf_gif.gif)
 
 #### Important
-It is your responsibility to ensure you have consent for assessing websites using this tool. Please don't point this at systems for which you do not have approval. Better yet, go grab yourself a vulnerable web app to test with. Examples that I've tested so far are [CrackMe Bank](http://crackme.trustwave.com/), [DVWA](http://www.dvwa.co.uk), [Wackopicko](https://github.com/adamdoupe/WackoPicko) and [Mutillidae](https://github.com/adamdoupe/WackoPicko).
+It is your responsibility to ensure you have consent for assessing websites using this tool. Please don't point this at systems for which you do not have approval. Better yet, go grab yourself a vulnerable web app to test with. Examples that I've tested so far are [CrackMe Bank](http://crackme.trustwave.com/), [DVWA](http://www.dvwa.co.uk), [Wackopicko](https://github.com/adamdoupe/WackoPicko) and [Mutillidae](https://github.com/webpwnized/mutillidae).
 
 ## Future work
 - Extend the sqlmapapi to include data fetching

@@ -1,5 +1,8 @@
 # NodeSQL - A Simple User Interface for demonstrating SQL Injection
-NodeSQL is an experimental web based GUI and back-end API that interfaces with [SQLMap](https://github.com/sqlmapproject/sqlmap) for database exploitation and exploration. Build the image and it should _just work_ regardless of your operating system.
+NodeSQL is an experimental web based GUI and back-end API that interfaces with [SQLMap](https://github.com/sqlmapproject/sqlmap) for database exploitation and exploration. Its interface was designed for ease-of-use, and my goal was to make it _look and feel_ just like a MySQL workbench tool, while leveraging injection techniques for data retrieval. Build the image and it should _just work_ regardless of your operating system.
+
+#### database injection traversal demo
+![gif image](./images/dvwa_gif.gif)
 
 It also features:
 
@@ -9,8 +12,6 @@ It also features:
 
 NodeSQL was built with security awareness in mind. It comprises only a small subset of SQLMap's extensive feature set, so for meaningful security engagements it's probably best to stick with the original SQLMap CLI. PR's are always welcome, and I've left a few notes in the bottom of this file of things to think about. 
 
-## Demo
-![gif image](./images/dvwa_gif.gif)
 
 ## Building NodeSQL 
 We provide two methods for building NodeSQL. The simplest of the two is to build a local docker image. Though if you want to run the application from source, that's supported too.

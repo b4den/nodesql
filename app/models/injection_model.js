@@ -150,7 +150,6 @@ const get_column_dump = async (url, args) => {
   return dump;
 };
 
-
 const parse_dump_location = (dump_str) => {
   const location = dump_str.match(/dumped to CSV file '([\s\S]*?)'/, dump_str) ?
     dump_str.match(/dumped to CSV file '([\s\S]*?)'/, dump_str)[1] : '';
@@ -158,7 +157,6 @@ const parse_dump_location = (dump_str) => {
   logger.info(`location: ${location}`);
   return location;
 };
-
 
 const get_dbs = async (url, args) => {
   const stdin = (args.quick) ? '(cat << END \ny\nn\nn\nn\nn\nn\nn\nEND\n) |' : '';

@@ -32,7 +32,7 @@ $("#data-btn").on('click', function(e) {
 
   cookie_data = btoa(cookie_data)
   $.ajax({
-    url: `http://localhost:3000/api/tree_dump`, 
+    url: `/api/tree_dump`, 
     type: "get",
     data: {
       "url": url,
@@ -171,7 +171,7 @@ $("#target").on('submit', function(e) {
 
 const source_get_databases = (url, post_data='') => {
   return $.ajax({
-    url: `http://localhost:3000/api/tree_databases`,
+    url: `/api/tree_databases`,
     method: 'get',
     data: {
       "url": url,
@@ -195,14 +195,14 @@ const lazy_load = (event, data) => {
   if (node.key == "database") {
 
     data.result = {
-      url: 'http://localhost:3000/api/tree_tables',
+      url: '/api/tree_tables',
       data: {"url": url, "database": node.title, postdata: btoa(post_data), cookie: cookie_data },
       cache: false
     }
   }
   else if (node.key == "table") {
     data.result = {
-      url: 'http://localhost:3000/api/tree_columns',
+      url: '/api/tree_columns',
       data: {"url": url, "database": node.parent.title, "table": node.title, postdata: btoa(post_data), cookie: cookie_data},
       cache: false
     }

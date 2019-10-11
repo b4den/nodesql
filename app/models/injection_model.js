@@ -85,15 +85,10 @@ const parse_columns = (column_str) => {
   /* clean up the table */
   remove_table_headings_and_borders(data);
 
-  data = data.map((x) => {
-    // remove delimiters '|'
-    const str = x.substr(1, x.length - 2);
-    let columns = str.split('|');
-
-    // remove whitespace
-    columns = columns.map((y) => y.trim());
-    return columns;
-  });
+  data = data.map((x) => (
+    x.substr(1, x.length - 2)
+    .split('|')              // remove pipe delimiters
+    .map((y) => y.trim()))); // remove whitespace
 
   return data;
 };

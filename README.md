@@ -25,7 +25,7 @@ git clone <this repository>
 # building the docker image
 docker build . -t nodesql
 
-# run the front-end and API from your container (mynet for docker networking)
+# run the front-end and API from your container (optional: mynet for docker networking)
 docker run --rm --name injection --net mynet -p 3000:3000 -it nodesql:latest
 ```
 

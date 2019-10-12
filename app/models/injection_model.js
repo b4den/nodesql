@@ -87,8 +87,8 @@ const parse_columns = (column_str) => {
 
   data = data.map((x) => (
     x.substr(1, x.length - 2)
-    .split('|')              // remove pipe delimiters
-    .map((y) => y.trim()))); // remove whitespace
+      .split('|')              // remove pipe delimiters
+      .map((y) => y.trim()))); // remove whitespace
 
   return data;
 };

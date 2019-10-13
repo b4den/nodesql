@@ -173,6 +173,7 @@ const source_get_databases = (url, post_data='') => {
   return $.ajax({
     url: `/api/tree_databases`,
     method: 'get',
+    timeout: 0,
     data: {
       "url": url,
       "cookie": cookie_data,

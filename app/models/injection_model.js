@@ -1,6 +1,3 @@
-/* TODO:
- * use --batch as opposed to stdin hacks
- * use -o for performance optimisations */
 const { spawn } = require('child_process');
 const { promisify } = require('util');
 const fs = require('fs');
@@ -19,7 +16,6 @@ const get_server_info = (dump_str) => {
   return { os, tech, db };
 };
 
-/* Consider refactoring this to remove 'sh' spawning. Instead use the sqlmap process itself */
 const shellout = async (hostname, processArgs) => (new Promise((resolve) => {
   const map_process = process.env.SQLMAP_DIR
     || path.join(`${__dirname}/../../bin/sqlmapproject/sqlmap.py`);
@@ -122,7 +118,6 @@ const get_dump_column_str = async (url, args) => {
 };
 
 const parse_dump_from_location = async (dump_str) => {
-  /* note, we need a better way to parse CSV.. */
   const filename = parse_dump_location(dump_str);
   const fs_async = promisify(fs.readFile);
   logger.info(`filename: ${filename}`);

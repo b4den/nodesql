@@ -19,29 +19,29 @@ const get_server_info = (dump_str) => {
   return { os, tech, db };
 };
 
-const shellout = async (stdin, hostname, sql_args) => (new Promise((resolve) => {
+/* Consider refactoring this to remove 'sh' spawning. Instead use the sqlmap process itself */
+const shellout = async (hostname, processArgs) => (new Promise((resolve) => {
   const map_process = process.env.SQLMAP_DIR
     || path.join(`${__dirname}/../../bin/sqlmapproject/sqlmap.py`);
 
+  let sqlMapArgs = [map_process, '--random-agent', '--url', hostname, ...processArgs]
+  logger.debug(`sqlMapArgs: ${JSON.stringify(sqlMapArgs, null, 4)}`);
+
   let process_output = '';
-  const command_string = `${stdin} ${map_process} --threads 10 -u '${hostname}' ${sql_args} --user-agent="Mozilla 5/0"`;
-  logger.debug(`subprocess_string =>  ${command_string.split(/\|(.+)/)[1]}`);
+  const subprocess_spawn = spawn('python', sqlMapArgs);
 
-  const subprocess_spawn = spawn('sh', ['-c', command_string]);
+  /* For debugging only */
+  subprocess_spawn.stderr.on('data', (data) => logger.error(`error occured ${data}`));
 
-  subprocess_spawn.stdout.on('data', (data) => {
-    process_output += data;
-  });
-
+  /* Let's get processing! */
+  subprocess_spawn.stdout.on('data', (data) => { process_output += data; });
   subprocess_spawn.stdout.on('close', () => (resolve(process_output)));
 }));
 
 const get_table_string = async (url, args) => {
-  const stdin = (args.quick) ? '(cat << END \ny\nn\nn\nEND\n) |' : '';
-  const sql_options = `-D ${args.database} ${args.arguments} --tables`;
-  logger.debug(`sql options: ${sql_options}`);
+  args.processArgs.push('-D', args.database, '--tables');
 
-  const response = await shellout(stdin, url, sql_options);
+  const response = await shellout(url, args.processArgs);
   return response;
 };
 
@@ -101,8 +101,8 @@ const get_tables = async (url, args) => {
 };
 
 const get_column_string = async (url, args) => {
-  const sql_options = `-D ${args.database} -T ${args.table} ${args.arguments} --columns`;
-  const response = await shellout('', url, sql_options);
+  args.processArgs.push('-D', args.database, '-T', args.table, '--columns');
+  const response = await shellout(url, args.processArgs);
 
   return response;
 };
@@ -115,10 +115,9 @@ const get_columns = async (url, args) => {
 };
 
 const get_dump_column_str = async (url, args) => {
-  const stdin = (args.quick) ? '(cat << END \nn\nn\n\nn\nn\nEND\n) |' : '';
-  const sql_options = `-D ${args.database} -T ${args.table} -C ${args.columns} ${args.arguments} --dump`;
+  args.processArgs.push('-D', args.database, '-T', args.table, '-C', args.columns, '--dump');
 
-  const response = await shellout(stdin, url, sql_options);
+  const response = await shellout(url, args.processArgs);
   return response;
 };
 
@@ -154,10 +153,9 @@ const parse_dump_location = (dump_str) => {
 };
 
 const get_dbs = async (url, args) => {
-  const stdin = (args.quick) ? '(cat << END \ny\nn\nn\nn\nn\nn\nn\nEND\n) |' : '';
-  const sql_options = `--dbs ${args.arguments}`;
+  args.processArgs.push('--dbs');
 
-  const response = await shellout(stdin, url, sql_options);
+  const response = await shellout(url, args.processArgs);
   return String(response);
 };
 

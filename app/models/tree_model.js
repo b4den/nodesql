@@ -1,21 +1,34 @@
 const { get_tables, get_columns, get_databases, get_column_dump } = require('./injection_model')
 const { logger } = require('../logger');
 
+const setAdditionalArgs = (processArgs, additionalArgs) => {
+  Object.keys(additionalArgs)
+    .forEach(key => processArgs.push(`--${key}`, additionalArgs[key]));
+}
+
 const set_command_line_arguments = (req) => {
-  let { url, postdata, fullscan, cookie } = req.query;
-  url = Buffer.from(url, 'base64').toString('ascii');
-  cookie = cookie ? `--cookie='${Buffer.from(req.query.cookie, 'base64').toString('ascii')}'` : '';
-  const post_data = (postdata) ? Buffer.from(postdata, 'base64').toString('ascii') : undefined;
+  let { url } = req.query;
+  let { postdata, fullscan, cookie, additionalArgs } = req.query;
+  cookie = cookie ? Buffer.from(req.query.cookie, 'base64').toString('ascii') : '';
+  postdata = (postdata) ? Buffer.from(postdata, 'base64').toString('ascii') : undefined;
 
-  /* ok, we need post_data, cookie, and quick set */
-  const post_data_string = (post_data) ? `--data '${post_data}'` : '';
-  const quick_string = (!fullscan) ? '' : '--batch';
-  const args = `${post_data_string} ${cookie} ${quick_string}`;
 
-  logger.debug(`url ${url} post_data ${post_data_string} cookie ${cookie} quickstr ${quick_string}`)
+  logger.debug(`set_command_line_args url: ${url} cookie: ${cookie} postdata: ${postdata}`);
+  let processArgs = []
+
+  /* If we have a cookie, then set that as an argument in our args array */
+  if (cookie) processArgs.push('--cookie', cookie);
+  if (postdata) processArgs.push('--data', postdata);
+
+  /* now lets see if we need to perform additional SQLMap options */
+  if (additionalArgs) setAdditionalArgs(processArgs, additionalArgs);
+
+  /* Let's set some performance switches */
+  processArgs.push('--batch', '--smart', '-o')
+
+
   return {
-    arguments: args,
-    quick: !fullscan,
+    processArgs,
     database: req.query.database,
     table: req.query.table,
     columns: req.query.columns,
